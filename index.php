@@ -13,6 +13,7 @@ and open the template in the editor.
         <?php
         // put your code here
         phpinfo(); //test git
+        //best source control is git
         ?>
     </body>
 </html>
