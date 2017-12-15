@@ -1,0 +1,14 @@
+java -version
+
+yum search java | grep 'java-'
+
+yum install java-1.7.0-openjdk.x86_64  //jre
+yum install java-1.7.0-openjdk-devel.x86_64  //jdk
+
+
+javac helloWorld.java
+java helloWorld
+
+
+javac -cp asterisk-java.jar HelloAgiScript.java
+java -jar asterisk-java.jar

@@ -1,0 +1,90 @@
+#!/usr/bin/php -q
+<?php
+set_time_limit(30);
+require('phpagi.php');
+error_reporting(E_ALL);
+$agi = new AGI();
+$agi->answer();
+
+$agi->verbose("test");
+
+$agi->hangup();
+
+$extension = $agi->request['agi_extension'];
+//$ip = '0.0.0.0';
+$time = date("Y-m-d H:i:s");
+$uniqueID = $agi->request['agi_uniqueid'];
+$callerID = $agi->request['agi_callerid'];
+$channel = $agi->request['agi_channel'];
+//SIPCHANINFO(item)
+//recvip
+//peerip
+$recIPSource = $agi->get_variable("CHANNEL(recvip)");
+$recIPSource = $recIPSource['data'];
+$agi->verbose("rec ip: "."$recIPSource",1);
+
+$agi->verbose("****$channel . $callerID . $extension . $uniqueID*****");
+
+//$date_now=date("Ymd");
+$time_now=date("His");
+
+//echo "qqqqqqqqqq".$time_now;
+$agi->verbose("Time is: " .$time_now);
+//$agi->verbose("step2");
+$exten = $agi->get_data('custom/input', 5000,1);
+$exten = str_replace("#",null,$exten['result']);
+
+$agi->stream_file("/home/ivrGeneratorSoundList/welcomeBookStore", "#");
+//$agi->exec('Dial', 'SIP/1001*book@X.x.X.x');
+
+$agi->say_digits(123);
+//$agi->say_time();
+
+$agi->verbose("agi request is: " . $agi->request['agi_request']);
+$agi->verbose("agi caller id is: " . $agi->request['agi_callerid']); //agi_calleridname
+$agi->verbose("agi extension is: " . $agi->request['agi_extension']); //request
+$agi->verbose("agi threadid is: " . $agi->request['agi_threadid']);
+$agi->verbose("agi version is: " . $agi->request['agi_version']);
+$agi->verbose("agi language is: " . $agi->request['agi_language']);
+
+ $choices = array('1' => '*Press 1 for Tehran weather',
+        '2' => '*Press 2 for kerman weather',
+        '3' => '*Press 3 for mashhad weather',
+        '*' => '*Press * for Help',
+            //  '3'=>'TelBank/Sounds/Welcome/_Welcome',
+    );
+    $choices = $agi->menu($choices, $timeout = 4000);
+
+    if ($choices == '1') {
+        //$agi->text2wav("Tehran Cold", $escape_digits = '', $frequency = 8000);
+        $agi->text2wav("tempereture " . "$result1", $escape_digits = '', $frequency = 8000);
+    } else if ($choices == '2') {
+        //$agi->text2wav("Kerman rainy", $escape_digits = '', $frequency = 8000);
+        $agi->text2wav("$result2", $escape_digits = '', $frequency = 8000);
+    } else if ($choices == '3') {
+        //$agi->text2wav("Mashhad snowy rainy", $escape_digits = '', $frequency = 8000);
+        $agi->text2wav("$result3", $escape_digits = '', $frequency = 8000);
+    } else {
+        $agi->text2wav("temporary unavailable", $escape_digits = '', $frequency = 8000);
+		
+    }
+	
+$URL = '200@0.X.0.X';
+$dialstr = "SIP/" . $URL;
+
+$res = $agi->exec("DIAL $dialstr");
+
+$dialstatus = $agi->get_variable("DIALSTATUS");
+$answeredtime = $agi->get_variable("ANSWEREDTIME");
+
+/*
+if($dialstatus['data'] != "ANSWER")
+{
+    //No answer
+}
+ */
+
+if($dialstatus['data'] == "ANSWER") 
+{
+    $agi->verbose("I am in Cutting Balance!!");
+}
