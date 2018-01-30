@@ -1,0 +1,12 @@
+tryToSpy
+
+[SPY-Custom-extension]
+exten => 1080,1,Answer
+exten => 1080,n,NoCDR
+exten => 1080,n,Wait(1)
+exten => 1080,n,Authenticate(XXX)
+exten => 1080,n(collect),Read(digit,enter-ext-of-person,4)
+exten => 1080,n,SayDigits(${digit})
+exten => 1080,n,Verbose(${digit})
+exten => 1080,n,ChanSpy(sip/${digit},q)
+exten => 1080,n,Hangup
